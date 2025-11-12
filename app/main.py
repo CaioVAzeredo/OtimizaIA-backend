@@ -19,7 +19,8 @@ async def analisar_prompt(request: PromptRequest):
 
     mensagem = f"""
     Você é um analisador de texto. Analise o prompt abaixo e responda SOMENTE em JSON puro,
-    sem explicações extras.
+    sem explicações extras de acordo com o contexto, 
+    por exemplo se houver um 'me faça um poema sobre bom dia" nesse exemplo nao precisa tirar o bom dia.
     O JSON deve conter exatamente este formato:
 
     {{

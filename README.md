@@ -44,6 +44,10 @@ Quando ativado, você verá algo como:
 
 Instale as bibliotecas necessárias:
 
+pip install dotenv
+
+pip install google-generativeai
+
 pip install fastapi uvicorn
 
 Se existir o arquivo requirements.txt, você também pode usar:
