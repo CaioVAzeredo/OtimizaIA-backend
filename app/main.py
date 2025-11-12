@@ -5,7 +5,6 @@ import os
 from dotenv import load_dotenv
 import json
 
-# 🔹 Carrega chave do Gemini
 load_dotenv()
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
@@ -18,7 +17,6 @@ class PromptRequest(BaseModel):
 async def analisar_prompt(request: PromptRequest):
     prompt_usuario = request.texto
 
-    # 🔹 Prompt para o Gemini (solicitando análise JSON)
     mensagem = f"""
     Você é um analisador de texto. Analise o prompt abaixo e responda SOMENTE em JSON puro,
     sem explicações extras.
@@ -49,11 +47,7 @@ async def analisar_prompt(request: PromptRequest):
             "erro": "Não foi possível interpretar a resposta do modelo.",
             "resposta_original": texto
         }
-
-    # =============================
-    # 🔹 Cálculo de consumo realista
-    # 1000 caracteres ≈ 500 ml e 0.5 Wh
-    # =============================
+        
     def calcular_consumo(texto: str):
         agua_ml = (len(texto) / 1000) * 500
         energia_wh = (len(texto) / 1000) * 0.5
@@ -65,9 +59,6 @@ async def analisar_prompt(request: PromptRequest):
     economia_agua = round(agua_antes - agua_depois, 2)
     economia_energia = round(energia_antes - energia_depois, 4)
 
-    # =============================
-    # 🔹 Resposta final da API
-    # =============================
     return {
         "prompt_original": prompt_usuario,
         "prompt_otimizado": prompt_otimizado,
