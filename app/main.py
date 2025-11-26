@@ -4,11 +4,22 @@ import google.generativeai as genai
 import os
 from dotenv import load_dotenv
 import json
+from fastapi.middleware.cors import CORSMiddleware
 
 load_dotenv()
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
 app = FastAPI(title="OtimizaIA - Comparador de Consumo de Prompts")
+
+origins = ["*"]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],  # Permite todos os métodos (POST, GET, etc.)
+    allow_headers=["*"],  # Permite todos os cabeçalhos
+)
 
 class PromptRequest(BaseModel):
     texto: str
