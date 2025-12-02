@@ -39,7 +39,7 @@ def calcular_consumo(texto: str):
 
     tokens = contar_tokens(texto)
     
-    agua_ml = tokens * 3.217
+    agua_ml = tokens * 0.3217
     energia_wh = tokens * 0.34
     
     return round(agua_ml, 2), round(energia_wh, 4), tokens
