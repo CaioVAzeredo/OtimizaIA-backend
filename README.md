@@ -1,95 +1,174 @@
-# 🚀 OtimizaIA Backend
+🌱 API para análise e otimização sustentável de prompts de IA
 
-Este é o backend do projeto **OtimizaIA**, desenvolvido em **Python + FastAPI**.  
-O objetivo do sistema é analisar prompts de IA e estimar o consumo de **água e energia** gerado por partes desnecessárias do texto.
+Este backend foi desenvolvido em FastAPI e utiliza o modelo Gemini 2.5 Flash para analisar prompts, identificar partes desnecessárias, otimizar o texto e calcular o consumo ambiental estimado em água e energia baseado na quantidade de tokens.
 
----
+Ele também possui um sistema de métricas, contabilizando:
 
-## 🧱 Requisitos
+Tokens antes e depois
 
-Antes de começar, instale:
+Água gasta (ml)
 
-- [Python 3.10+](https://www.python.org/downloads/)
-- [Git](https://git-scm.com/) *(opcional, se quiser clonar o repositório)*
+Energia gasta (Wh)
 
----
+Economia total após otimização
 
-## ⚙️ 1. Clonar o projeto
+🚀 Tecnologias Utilizadas
 
-```bash
-git clone https://github.com/seu-usuario/OtimizaIA-backend.git
-cd OtimizaIA-backend
+Python 3.10+
 
-(Se você já tiver o projeto localmente, apenas entre na pasta.)
-🐍 2. Criar ambiente virtual
+FastAPI
 
-Crie um ambiente virtual Python dentro da pasta do projeto:
+Uvicorn
+
+Google Generative AI (Gemini API)
+
+Transformers (GPT2 Tokenizer)
+
+python-dotenv
+
+CORS Middleware
+
+📁 Estrutura do Projeto
+OtimizaIA-backend/
+│
+├── .env
+├── requirements.txt
+└── main.py
+
+
+O arquivo main.py contém todo o backend funcional.
+
+🔑 Variáveis de Ambiente
+
+Crie um arquivo .env na raiz do projeto:
+
+GEMINI_API_KEY=COLOQUE_SUA_CHAVE_AQUI
+
+🧱 Instalação
+1️⃣ Criar ambiente virtual
+
+Windows (PowerShell)
 
 python -m venv venv
-
-Ative o ambiente virtual:
-👉 Windows (PowerShell)
-
 venv\Scripts\activate
 
-👉 Linux / macOS
 
+Linux/Mac
+
+python3 -m venv venv
 source venv/bin/activate
 
-Quando ativado, você verá algo como:
+2️⃣ Instalar dependências
 
-(venv) PS C:\...\OtimizaIA-backend>
-
-📦 3. Instalar dependências
-
-Instale as bibliotecas necessárias:
-
-pip install dotenv
-
-pip install google-generativeai
-
-pip install fastapi uvicorn
-
-Se existir o arquivo requirements.txt, você também pode usar:
+Se tiver requirements.txt:
 
 pip install -r requirements.txt
 
-🧠 4. Estrutura básica do projeto
 
-OtimizaIA-backend/
-│
-├── venv/               # ambiente virtual (não editar)
-└── app/
-    └── main.py         # ponto de entrada da aplicação
+Ou instale manualmente:
 
-🚀 5. Rodar o servidor
+pip install fastapi uvicorn
+pip install python-dotenv
+pip install google-generativeai
+pip install transformers
 
-Com o ambiente virtual ativo, execute:
+▶ Rodando o servidor
+uvicorn main:app --reload
 
-uvicorn app.main:app --reload
 
-Você verá algo como:
+A API ficará disponível em:
 
-INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+http://127.0.0.1:8000
 
-🌐 6. Acessar a API
+📘 Documentação interativa:
 
-Abra no navegador:
+Swagger UI → http://127.0.0.1:8000/docs
 
-    Página inicial → http://127.0.0.1:8000
+ReDoc → http://127.0.0.1:8000/redoc
 
-Documentação interativa (Swagger UI) → http://127.0.0.1:8000/docs
+🔍 Endpoints
+🔹 POST /analise
 
-Documentação alternativa (ReDoc) → http://127.0.0.1:8000/redoc
-🧩 7. Encerrar o servidor
+Analisa o texto enviado e retorna:
 
-Pressione CTRL + C no terminal para parar o servidor.
-Para sair do ambiente virtual, use:
+Prompt otimizado
 
-deactivate
+Partes desnecessárias
 
-💡 Dica
+Tokens antes/depois
 
-Se você quiser adicionar novas dependências no projeto (ex: SQLAlchemy, Pydantic etc.), instale com pip install nome_da_lib e atualize o arquivo requirements.txt:
+Consumo de água e energia
+
+Economia total
+
+📤 Exemplo de requisição:
+{
+  "texto": "Olá, por favor, será que você poderia me explicar gentilmente o que é um átomo?"
+}
+
+📥 Exemplo de resposta:
+{
+  "analise": {
+    "prompt_original": "Olá, por favor...",
+    "prompt_otimizado": "Explique o que é um átomo.",
+    "partes_desnecessarias": ["Olá", "por favor", "gentilmente"]
+  },
+  "metricas": {
+    "tokens": {
+      "antes": 40,
+      "depois": 12,
+      "economia": 28
+    },
+    "consumo_agua_ml": {
+      "antes": 1.6,
+      "depois": 0.48,
+      "economia": 1.12
+    },
+    "consumo_energia_wh": {
+      "antes": 0.16,
+      "depois": 0.048,
+      "economia": 0.112
+    }
+  }
+}
+
+🧠 Como o backend funciona internamente
+🔹 1. Conta tokens usando GPT2Tokenizer
+
+Isso simula o tamanho real do prompt.
+
+🔹 2. Calcula consumo ambiental
+
+Com base nos tokens:
+
+Água: 0.04 ml por token
+
+Energia: 0.004 Wh por token
+
+🔹 3. Envia o texto ao Gemini
+
+Com instruções rígidas para retornar JSON formatado.
+
+🔹 4. Trata falhas da API
+
+Se o Gemini retornar formato inválido ou falhar, o backend:
+
+Não quebra
+
+Retorna o prompt original
+
+Informa erro na análise inteligente
+
+📦 Atualizar dependências
+
+Após instalar novas libs:
 
 pip freeze > requirements.txt
+
+🛑 Encerrar servidor
+CTRL + C
+
+
+E para sair do ambiente virtual:
+
+deactivate
